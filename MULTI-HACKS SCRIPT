@@ -1,0 +1,135 @@
+-- AANN EXECUTOR
+local UserInputService = game:GetService("UserInputService")
+local StarterGui = game:GetService("StarterGui")
+
+-- GUI PRINCIPAL
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "AANN_EXECUTOR"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 400, 0, 250)
+frame.Position = UDim2.new(0.5, -200, 0.5, -125)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Text = "AANN EXECUTOR 2025"
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 26
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.new(1, 1, 1)
+
+local textbox = Instance.new("TextBox", frame)
+textbox.Size = UDim2.new(0.9, 0, 0, 45)
+textbox.Position = UDim2.new(0.05, 0, 0.45, 0)
+textbox.PlaceholderText = "Ingrese la clave..."
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 20
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Instance.new("UICorner", textbox).CornerRadius = UDim.new(0, 10)
+
+local button = Instance.new("TextButton", frame)
+button.Size = UDim2.new(0.9, 0, 0, 45)
+button.Position = UDim2.new(0.05, 0, 0.75, 0)
+button.Text = "VERIFICAR"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.TextColor3 = Color3.new(1, 1, 1)
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 10)
+
+-- EFECTO ARCOÍRIS
+task.spawn(function()
+	while true do
+		local t = tick() * 2
+		local r = math.sin(t) * 0.5 + 0.5
+		local g = math.sin(t + 2) * 0.5 + 0.5
+		local b = math.sin(t + 4) * 0.5 + 0.5
+		local rainbow = Color3.new(r, g, b)
+		textbox.BackgroundColor3 = rainbow
+		button.BackgroundColor3 = rainbow
+		title.TextColor3 = rainbow
+		task.wait(0.1)
+	end
+end)
+
+-- GUI DE HACKS
+local function abrirHacks()
+	gui:Destroy()
+	local hackGui = Instance.new("ScreenGui", game.CoreGui)
+	hackGui.Name = "AANN_HACKS"
+
+	local hackFrame = Instance.new("Frame", hackGui)
+	hackFrame.Size = UDim2.new(0, 420, 0, 500)
+	hackFrame.Position = UDim2.new(0.5, -210, 0.5, -250)
+	hackFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	Instance.new("UICorner", hackFrame).CornerRadius = UDim.new(0, 10)
+
+	local games = {
+		{"Dead Rails", "https://raw.githubusercontent.com/itsyourlokki/lokki/main/DeadRails"},
+		{"Doors", "https://raw.githubusercontent.com/UltraStuff/scripts2/main/doors"},
+		{"Brookhaven", "https://pastebin.com/raw/dm1Bfcqu"},
+		{"Gunfight Arena", "https://pastebin.com/raw/1kN2vYEx"},
+		{"Slap Battles", "https://raw.githubusercontent.com/DonjoScripts/Public-Scripts/refs/heads/Slap-Battles/TheFastestBondStealer.lua"},
+		{"Grow a Garden", "https://raw.githubusercontent.com/depthso/Grow-a-Garden/refs/heads/main/autofarm.lua"},
+		{"Pet Simulator X", "https://pastebin.com/raw/ww3D3PPn"},
+		{"Blox Fruits", "https://pastebin.com/raw/Mnq0vE2p"},
+		{"Arsenal", "https://pastebin.com/raw/zgTv4TgB"},
+		{"Jailbreak", "https://pastebin.com/raw/9dP4H3pN"},
+		{"Adopt Me", "https://pastebin.com/raw/35wNdYJr"},
+	}
+
+	for i, gameData in ipairs(games) do
+		local btn = Instance.new("TextButton", hackFrame)
+		btn.Size = UDim2.new(0.9, 0, 0, 35)
+		btn.Position = UDim2.new(0.05, 0, 0, (i - 1) * 40 + 10)
+		btn.Text = gameData[1]
+		btn.Font = Enum.Font.GothamBold
+		btn.TextSize = 18
+		btn.TextColor3 = Color3.new(1, 1, 1)
+		btn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+		Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+
+		task.spawn(function()
+			while btn and btn.Parent do
+				local t = tick() + i * 2
+				local r = math.sin(t) * 0.5 + 0.5
+				local g = math.sin(t + 2) * 0.5 + 0.5
+				local b = math.sin(t + 4) * 0.5 + 0.5
+				btn.BackgroundColor3 = Color3.new(r, g, b)
+				task.wait(0.1)
+			end
+		end)
+
+		btn.MouseButton1Click:Connect(function()
+			hackGui:Destroy()
+			pcall(function()
+				StarterGui:SetCore("SendNotification", {
+					Title = "AANN EXECUTOR",
+					Text = "Activando hack de " .. gameData[1],
+					Duration = 4
+				})
+			end)
+			loadstring(game:HttpGet(gameData[2]))()
+		end)
+	end
+end
+
+-- VERIFICACIÓN
+button.MouseButton1Click:Connect(function()
+	if textbox.Text == "AANN 2010" then
+		pcall(function()
+			StarterGui:SetCore("SendNotification", {
+				Title = "AANN EXECUTOR",
+				Text = "Activado correctamente",
+				Duration = 4
+			})
+		end)
+		abrirHacks()
+	else
+		textbox.Text = "Clave incorrecta"
+	end
+end)
