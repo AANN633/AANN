@@ -1,0 +1,110 @@
+--// AANN EXECUTOR v1.2 con KEY y colores arcoíris + redes sociales
+
+local UserInputService = game:GetService("UserInputService")
+
+-- Crear GUI principal
+local gui = Instance.new("ScreenGui")
+gui.Name = "AANNExecutor"
+gui.ResetOnSpawn = false
+gui.Parent = game.CoreGui
+
+-- Crear frame principal
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 260, 0, 180)
+frame.Position = UDim2.new(0.5, -130, 0.4, -90)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+-- Esquinas redondeadas
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = frame
+
+-- Título
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.Text = "AANN EXECUTOR"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 24
+title.Parent = frame
+
+-- Caja de texto para la key
+local textbox = Instance.new("TextBox")
+textbox.PlaceholderText = "Ingrese la clave..."
+textbox.Size = UDim2.new(0.9, 0, 0, 35)
+textbox.Position = UDim2.new(0.05, 0, 0.4, 0)
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 20
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+textbox.BorderSizePixel = 0
+textbox.Parent = frame
+
+local textboxCorner = Instance.new("UICorner")
+textboxCorner.CornerRadius = UDim.new(0, 8)
+textboxCorner.Parent = textbox
+
+-- Botón de verificar
+local button = Instance.new("TextButton")
+button.Text = "VERIFICAR"
+button.Size = UDim2.new(0.9, 0, 0, 35)
+button.Position = UDim2.new(0.05, 0, 0.67, 0)
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.TextColor3 = Color3.new(1, 1, 1)
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+button.Parent = frame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = button
+
+-- Redes sociales arcoíris
+local redes = Instance.new("TextLabel")
+redes.Size = UDim2.new(1, 0, 0, 25)
+redes.Position = UDim2.new(0, 0, 1, -25)
+redes.BackgroundTransparency = 1
+redes.Text = "TikTok: aann_luck | IG: pzk_rodri | YouTube: HIPAPUS XD"
+redes.TextSize = 14
+redes.Font = Enum.Font.GothamSemibold
+redes.TextColor3 = Color3.new(1, 1, 1)
+redes.TextScaled = false
+redes.Parent = frame
+
+-- Función para efecto arcoíris
+task.spawn(function()
+	while true do
+		local t = tick() * 2
+		local r = math.sin(t) * 0.5 + 0.5
+		local g = math.sin(t + 2) * 0.5 + 0.5
+		local b = math.sin(t + 4) * 0.5 + 0.5
+		local rainbow = Color3.new(r, g, b)
+
+		textbox.BackgroundColor3 = rainbow
+		button.BackgroundColor3 = rainbow
+		title.TextColor3 = rainbow
+		redes.TextColor3 = rainbow
+
+		task.wait(0.1)
+	end
+end)
+
+-- Acción al presionar el botón
+button.MouseButton1Click:Connect(function()
+	if textbox.Text == "AANN 2010" then
+		gui:Destroy()
+		pcall(function()
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "AANN EXECUTOR",
+				Text = "Hacks activados!",
+				Duration = 5
+			})
+		end)
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/depthso/Grow-a-Garden/refs/heads/main/autofarm.lua"))()
+	else
+		textbox.Text = "Clave incorrecta"
+	end
+end)
