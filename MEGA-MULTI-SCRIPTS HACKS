@@ -1,0 +1,139 @@
+--// AANN EXECUTOR v2 con INTERFAZ DE HACKS (Key: AANN 2010)
+local UserInputService = game:GetService("UserInputService")
+
+-- Crear GUI principal
+local gui = Instance.new("ScreenGui")
+gui.Name = "AANNExecutor"
+gui.ResetOnSpawn = false
+gui.Parent = game.CoreGui
+
+-- Crear frame de login
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 260, 0, 150)
+frame.Position = UDim2.new(0.5, -130, 0.4, -75)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = frame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.Text = "AANN EXECUTOR"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 24
+title.Parent = frame
+
+local textbox = Instance.new("TextBox")
+textbox.PlaceholderText = "Ingrese la clave..."
+textbox.Size = UDim2.new(0.9, 0, 0, 35)
+textbox.Position = UDim2.new(0.05, 0, 0.45, 0)
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 20
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+textbox.BorderSizePixel = 0
+textbox.Parent = frame
+
+local textboxCorner = Instance.new("UICorner")
+textboxCorner.CornerRadius = UDim.new(0, 8)
+textboxCorner.Parent = textbox
+
+local button = Instance.new("TextButton")
+button.Text = "VERIFICAR"
+button.Size = UDim2.new(0.9, 0, 0, 35)
+button.Position = UDim2.new(0.05, 0, 0.75, 0)
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.TextColor3 = Color3.new(1, 1, 1)
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+button.Parent = frame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = button
+
+-- Efecto arcoíris
+task.spawn(function()
+	while gui do
+		local t = tick() * 2
+		local r = math.sin(t) * 0.5 + 0.5
+		local g = math.sin(t + 2) * 0.5 + 0.5
+		local b = math.sin(t + 4) * 0.5 + 0.5
+		local rainbow = Color3.new(r, g, b)
+
+		textbox.BackgroundColor3 = rainbow
+		button.BackgroundColor3 = rainbow
+		title.TextColor3 = rainbow
+
+		task.wait(0.1)
+	end
+end)
+
+-- Al verificar clave
+button.MouseButton1Click:Connect(function()
+	if textbox.Text == "AANN 2010" then
+		gui:Destroy()
+
+		-- Crear nueva interfaz de hacks
+		local gui2 = Instance.new("ScreenGui", game.CoreGui)
+		gui2.Name = "AANNHacksUI"
+
+		local main = Instance.new("Frame", gui2)
+		main.Size = UDim2.new(0, 320, 0, 400)
+		main.Position = UDim2.new(0.5, -160, 0.5, -200)
+		main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		main.BorderSizePixel = 0
+
+		local mainCorner = Instance.new("UICorner", main)
+		mainCorner.CornerRadius = UDim.new(0, 12)
+
+		local layout = Instance.new("UIGridLayout", main)
+		layout.CellSize = UDim2.new(0, 140, 0, 50)
+		layout.CellPadding = UDim2.new(0, 10, 0, 10)
+		layout.FillDirectionMaxCells = 2
+		layout.SortOrder = Enum.SortOrder.LayoutOrder
+		layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+		local title2 = Instance.new("TextLabel", main)
+		title2.Size = UDim2.new(1, 0, 0, 40)
+		title2.Text = "AANN HACKS"
+		title2.Font = Enum.Font.GothamBlack
+		title2.TextSize = 26
+		title2.TextColor3 = Color3.new(1, 1, 1)
+		title2.BackgroundTransparency = 1
+		title2.LayoutOrder = -1
+
+		local function crearBoton(nombre, url)
+			local btn = Instance.new("TextButton")
+			btn.Text = nombre
+			btn.Font = Enum.Font.GothamBold
+			btn.TextSize = 18
+			btn.TextColor3 = Color3.new(1, 1, 1)
+			btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+			btn.Parent = main
+
+			local btnCorner = Instance.new("UICorner", btn)
+			btnCorner.CornerRadius = UDim.new(0, 8)
+
+			btn.MouseButton1Click:Connect(function()
+				loadstring(game:HttpGet(url))()
+			end)
+		end
+
+		-- Agrega tus hacks aquí (nombre + URL)
+		crearBoton("Doors", "https://raw.githubusercontent.com/UltraStuff/scripts2/main/doors")
+		crearBoton("Grow a Garden", "https://raw.githubusercontent.com/depthso/Grow-a-Garden/refs/heads/main/autofarm.lua")
+		crearBoton("Blox Fruits", "https://raw.githubusercontent.com/ScriptRUs/blox/main/main.lua")
+		crearBoton("Pet Sim 99", "https://raw.githubusercontent.com/Bxmmunity/pet99/main/script.lua")
+		crearBoton("Rainbow Friends", "https://raw.githubusercontent.com/Dreadmania/rainbowfriends/main/script.lua")
+		crearBoton("TSB", "https://raw.githubusercontent.com/thelegendhub/Aa/main/Main.lua")
+		crearBoton("Kaiju Paradise", "https://raw.githubusercontent.com/ToraIsMe2/ToraIsMe2/main/KaijuParadise")
+	else
+		textbox.Text = "Clave incorrecta"
+	end
+end)
