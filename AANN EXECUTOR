@@ -1,0 +1,95 @@
+-- Creación de la interfaz para la key con colores arcoiris
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local Frame = Instance.new("Frame", ScreenGui)
+local UICorner = Instance.new("UICorner", Frame)
+local Title = Instance.new("TextLabel", Frame)
+local KeyBox = Instance.new("TextBox", Frame)
+local SubmitButton = Instance.new("TextButton", Frame)
+local SocialsLabel = Instance.new("TextLabel", Frame)
+
+-- Configuración de la interfaz
+ScreenGui.Name = "AannExecutor"
+Frame.Size = UDim2.new(0, 400, 0, 300)
+Frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Frame.Active = true
+Frame.Draggable = true
+UICorner.CornerRadius = UDim.new(0, 10)
+
+-- Título
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Text = "AANN EXECUTOR"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+Title.TextSize = 24
+Title.TextAlignment = Enum.TextAlignment.Center
+Title.Font = Enum.Font.GothamBold
+
+-- Caja para ingresar la Key
+KeyBox.Size = UDim2.new(0.8, 0, 0, 50)
+KeyBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+KeyBox.PlaceholderText = "Ingresa la Key"
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+KeyBox.TextSize = 18
+KeyBox.Font = Enum.Font.Gotham
+
+-- Botón de Enviar
+SubmitButton.Size = UDim2.new(0.5, 0, 0, 50)
+SubmitButton.Position = UDim2.new(0.25, 0, 0.45, 0)
+SubmitButton.Text = "Activar Hack"
+SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitButton.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+SubmitButton.TextSize = 20
+SubmitButton.Font = Enum.Font.GothamBold
+
+-- Redes Sociales
+SocialsLabel.Size = UDim2.new(1, 0, 0, 40)
+SocialsLabel.Position = UDim2.new(0, 0, 0.75, 0)
+SocialsLabel.Text = "TikTok: aann_luck | IG: pzk_rodri | YouTube: HIPAPUS XD"
+SocialsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+SocialsLabel.TextSize = 16
+SocialsLabel.Font = Enum.Font.Gotham
+SocialsLabel.TextAlignment = Enum.TextAlignment.Center
+
+-- Colores cambiantes para la key y redes sociales
+local function rainbowText(textLabel)
+    local hue = 0
+    game:GetService("RunService").Heartbeat:Connect(function()
+        hue = hue + 0.005
+        if hue > 1 then hue = 0 end
+        textLabel.TextColor3 = Color3.fromHSV(hue, 1, 1)
+    end)
+end
+
+-- Activando el efecto arcoiris para redes sociales
+rainbowText(SocialsLabel)
+
+-- Acción al presionar el botón de enviar
+SubmitButton.MouseButton1Click:Connect(function()
+    local key = KeyBox.Text
+    if key == "AANN 2010" then
+        -- Loadstring para ejecutar el script
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/depthso/Grow-a-Garden/refs/heads/main/autofarm.lua"))()
+        end)
+
+        -- Notificación de activación
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "AANN EXECUTOR ACTIVADO",
+            Text = "Hack cargado correctamente.",
+            Duration = 5
+        })
+    else
+        -- Si la key no es correcta
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "Key incorrecta. Intenta nuevamente.",
+            Duration = 5
+        })
+    end
+end)
+
+-- Mostrar la interfaz
+ScreenGui.Parent = game.CoreGui
