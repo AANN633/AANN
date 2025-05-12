@@ -1,0 +1,115 @@
+-- Garden Hack Script Mejorado by An
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "GardenHack"
+
+-- Crear botón flotante
+local button = Instance.new("TextButton", gui)
+button.Size = UDim2.new(0, 100, 0, 40)
+button.Position = UDim2.new(0, 20, 0.5, -20)
+button.Text = "Hacks"
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 127)
+button.TextColor3 = Color3.new(1,1,1)
+button.TextScaled = true
+button.Draggable = true
+button.Active = true
+button.BorderSizePixel = 0
+button.BackgroundTransparency = 0.2
+
+-- Menú principal
+local menu = Instance.new("Frame", gui)
+menu.Size = UDim2.new(0, 200, 0, 250)
+menu.Position = UDim2.new(0, 130, 0.5, -125)
+menu.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+menu.BorderSizePixel = 0
+menu.Visible = false
+
+-- Función para crear botones dentro del menú
+function crearBoton(nombre, func)
+	local btn = Instance.new("TextButton", menu)
+	btn.Size = UDim2.new(1, -10, 0, 40)
+	btn.Position = UDim2.new(0, 5, 0, (#menu:GetChildren()-1)*45 + 5)
+	btn.Text = nombre
+	btn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.TextScaled = true
+	btn.MouseButton1Click:Connect(func)
+end
+
+-- Auto Frutas
+local frutasActivas = false
+crearBoton("Auto Frutas", function()
+	frutasActivas = not frutasActivas
+	while frutasActivas do
+		for _,v in pairs(workspace:GetDescendants()) do
+			if v.Name == "Fruit" and v:FindFirstChild("ClickDetector") then
+				fireclickdetector(v.ClickDetector)
+			end
+		end
+		wait(1)
+	end
+end)
+
+-- Auto Vender
+local venderActivo = false
+crearBoton("Auto Vender", function()
+	venderActivo = not venderActivo
+	while venderActivo do
+		if workspace:FindFirstChild("Sell") then
+			player.Character:MoveTo(workspace.Sell.Position)
+		end
+		wait(5)
+	end
+end)
+
+-- Auto Plantar
+local plantarActivo = false
+crearBoton("Auto Plantar", function()
+	plantarActivo = not plantarActivo
+	while plantarActivo do
+		for _,v in pairs(workspace:GetDescendants()) do
+			if v.Name == "PlantButton" and v:FindFirstChild("ClickDetector") then
+				fireclickdetector(v.ClickDetector)
+			end
+		end
+		wait(2)
+	end
+end)
+
+-- Auto Huevos
+local huevosActivo = false
+crearBoton("Auto Huevos", function()
+	huevosActivo = not huevosActivo
+	while huevosActivo do
+		if workspace:FindFirstChild("EggMachine") then
+			fireclickdetector(workspace.EggMachine.ClickDetector)
+		end
+		wait(10)
+	end
+end)
+
+-- Notificación de frutas cambiadas
+local frutasViejas = {}
+crearBoton("Notificación Frutas", function()
+	game:GetService("RunService").RenderStepped:Connect(function()
+		local nuevas = {}
+		for _,v in pairs(workspace:GetChildren()) do
+			if v.Name == "Fruit" then
+				nuevas[v] = true
+				if not frutasViejas[v] then
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "Nueva fruta!",
+						Text = v.Name.." apareció",
+						Duration = 3
+					})
+				end
+			end
+		end
+		frutasViejas = nuevas
+	end)
+end)
+
+-- Mostrar/ocultar menú
+button.MouseButton1Click:Connect(function()
+	menu.Visible = not menu.Visible
+end)
