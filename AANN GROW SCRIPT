@@ -1,0 +1,107 @@
+-- GUI Principal
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "AANNHack"
+
+-- Frame Principal
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 280, 0, 180)
+frame.Position = UDim2.new(0.5, -140, 0.4, -90)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 10)
+
+-- Título
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.Text = "AANN GARDEN HACK"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 22
+
+-- Caja de Texto para la Clave
+local textbox = Instance.new("TextBox", frame)
+textbox.PlaceholderText = "Ingrese la clave..."
+textbox.Size = UDim2.new(0.9, 0, 0, 35)
+textbox.Position = UDim2.new(0.05, 0, 0.45, 0)
+textbox.Font = Enum.Font.Gotham
+textbox.TextSize = 20
+textbox.TextColor3 = Color3.new(1, 1, 1)
+textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+textbox.BorderSizePixel = 0
+
+Instance.new("UICorner", textbox).CornerRadius = UDim.new(0, 8)
+
+-- Botón VERIFICAR
+local button = Instance.new("TextButton", frame)
+button.Text = "VERIFICAR"
+button.Size = UDim2.new(0.43, 0, 0, 35)
+button.Position = UDim2.new(0.05, 0, 0.75, 0)
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.TextColor3 = Color3.new(1, 1, 1)
+button.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
+
+-- Botón GET KEY
+local getKey = Instance.new("TextButton", frame)
+getKey.Text = "GET KEY"
+getKey.Size = UDim2.new(0.43, 0, 0, 35)
+getKey.Position = UDim2.new(0.52, 0, 0.75, 0)
+getKey.Font = Enum.Font.GothamBold
+getKey.TextSize = 20
+getKey.TextColor3 = Color3.new(1, 1, 1)
+getKey.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+
+Instance.new("UICorner", getKey).CornerRadius = UDim.new(0, 8)
+
+-- Efecto Arcoíris
+task.spawn(function()
+	while gui do
+		local t = tick() * 2
+		local r = math.sin(t) * 0.5 + 0.5
+		local g = math.sin(t + 2) * 0.5 + 0.5
+		local b = math.sin(t + 4) * 0.5 + 0.5
+		local rainbow = Color3.new(r, g, b)
+
+		textbox.BackgroundColor3 = rainbow
+		button.BackgroundColor3 = rainbow
+		getKey.BackgroundColor3 = rainbow
+		title.TextColor3 = rainbow
+
+		task.wait(0.1)
+	end
+end)
+
+-- Acciones de los Botones
+getKey.MouseButton1Click:Connect(function()
+	setclipboard("https://www.tiktok.com/@aann_luck")
+	pcall(function()
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "AANN KEY SYSTEM",
+			Text = "Link copiado. Sígueme para obtener la clave.",
+			Duration = 6
+		})
+	end)
+end)
+
+button.MouseButton1Click:Connect(function()
+	if textbox.Text == "AANN 2010" then
+		gui:Destroy()
+		pcall(function()
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "AANN HACK ACTIVADO",
+				Text = "Disfruta los poderes secretos!",
+				Duration = 5
+			})
+		end)
+
+		-- Ejecución del Script Funcional
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ameicaa1/Grow-a-Garden/main/Grow_A_Garden.lua"))()
+	else
+		textbox.Text = "Clave incorrecta"
+	end
+end)
