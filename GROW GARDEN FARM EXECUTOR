@@ -1,0 +1,129 @@
+-- Grow a Garden GUI estilo Kiciahook V2
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "KiciahookV2"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Librería para UI
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua"))()
+local Window = Library:CreateWindow({Title = "Kiciahook V2 | Grow a Garden", Center = true, AutoShow = true})
+
+-- Tabs
+local CombatTab = Window:AddTab("Combat")
+local VisualsTab = Window:AddTab("Visuals")
+local MiscTab = Window:AddTab("Misc")
+local TPTab = Window:AddTab("Teleports")
+local SettingsTab = Window:AddTab("Settings")
+
+-- Variables toggle
+local autofarm = false
+local autoplant = false
+local autoharvest = false
+local showESP = false
+
+-- COMBAT
+CombatTab:AddToggle("Auto Farm", {Default = false}):OnChanged(function(val)
+    autofarm = val
+end)
+
+CombatTab:AddToggle("Auto Plant", {Default = false}):OnChanged(function(val)
+    autoplant = val
+end)
+
+CombatTab:AddToggle("Auto Harvest", {Default = false}):OnChanged(function(val)
+    autoharvest = val
+end)
+
+-- VISUALS
+VisualsTab:AddToggle("ESP Frutas Rojas", {Default = false}):OnChanged(function(val)
+    showESP = val
+    if val then
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("MeshPart") and v.Name == "Fruit" then
+                local highlight = Instance.new("Highlight", v)
+                highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                highlight.OutlineColor = Color3.fromRGB(0, 0, 0)
+                highlight.Name = "ESP"
+            end
+        end
+    else
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v:FindFirstChild("ESP") then
+                v.ESP:Destroy()
+            end
+        end
+    end
+end)
+
+-- MISC
+MiscTab:AddButton("TP a fruta más cercana", function()
+    local char = game.Players.LocalPlayer.Character
+    local closest, dist = nil, math.huge
+    for _,v in pairs(workspace:GetDescendants()) do
+        if v:IsA("MeshPart") and v.Name == "Fruit" then
+            local d = (char.HumanoidRootPart.Position - v.Position).magnitude
+            if d < dist then
+                closest = v
+                dist = d
+            end
+        end
+    end
+    if closest then
+        char:MoveTo(closest.Position + Vector3.new(0,3,0))
+    end
+end)
+
+MiscTab:AddSlider("Velocidad", {
+    Text = "WalkSpeed",
+    Min = 16,
+    Max = 100,
+    Default = 16,
+    Rounding = 0
+}):OnChanged(function(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+MiscTab:AddSlider("Salto", {
+    Text = "JumpPower",
+    Min = 50,
+    Max = 200,
+    Default = 50,
+    Rounding = 0
+}):OnChanged(function(value)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+end)
+
+-- TELEPORTS
+TPTab:AddButton("TP al Mercado", function()
+    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(100,5,100)) -- Cambia por posición real
+end)
+
+TPTab:AddButton("TP al Campo", function()
+    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(0,5,0)) -- Cambia por posición real
+end)
+
+TPTab:AddButton("TP a Venta", function()
+    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(-100,5,-100)) -- Cambia por posición real
+end)
+
+-- SETTINGS
+SettingsTab:AddButton("Desactivar GUI", function()
+    ScreenGui:Destroy()
+end)
+
+SettingsTab:AddLabel("Script por AANN633")
+
+-- Loops automáticos
+task.spawn(function()
+    while task.wait(1) do
+        if autofarm then
+            -- Agrega lógica de farm automático aquí
+        end
+        if autoplant then
+            -- Agrega lógica de auto-plantar aquí
+        end
+        if autoharvest then
+            -- Agrega lógica de cosecha automática aquí
+        end
+    end
+end)
