@@ -1,0 +1,115 @@
+-- Pantalla de carga limpia (sin redes)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "PantallaCarga"
+
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Size = UDim2.new(1, 0, 1, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+
+local Percent = Instance.new("TextLabel", Frame)
+Percent.Size = UDim2.new(1, 0, 0.2, 0)
+Percent.Position = UDim2.new(0, 0, 0.4, 0)
+Percent.Text = "Cargando... 0%"
+Percent.TextColor3 = Color3.fromRGB(255, 255, 255)
+Percent.Font = Enum.Font.GothamBlack
+Percent.TextScaled = true
+Percent.BackgroundTransparency = 1
+
+for i = 0, 100 do
+	Percent.Text = "Cargando... " .. i .. "%"
+	wait(0.02)
+end
+ScreenGui:Destroy()
+
+-- Interfaz de duplicador
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "GrowDupliqueGUI"
+
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0, 300, 0, 230)
+main.Position = UDim2.new(0.35, 0, 0.3, 0)
+main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+main.BorderSizePixel = 0
+main.Active = true
+main.Draggable = true
+main.BackgroundTransparency = 0.05
+
+-- Título
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, 0, 0.2, 0)
+title.Text = "🌿Grow Duplique v1.0🌿"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.BackgroundTransparency = 1
+
+-- Caja de nombre
+local box = Instance.new("TextBox", main)
+box.Position = UDim2.new(0.1, 0, 0.3, 0)
+box.Size = UDim2.new(0.8, 0, 0.18, 0)
+box.PlaceholderText = "Nombre exacto de la semilla"
+box.Font = Enum.Font.Gotham
+box.TextScaled = true
+box.Text = ""
+
+-- Efecto arcoíris
+local function makeRainbow(btn)
+	spawn(function()
+		while true do
+			for h = 0, 1, 0.01 do
+				btn.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
+				wait(0.01)
+			end
+		end
+	end)
+end
+
+-- Botón duplicar en mano
+local dupTool = Instance.new("TextButton", main)
+dupTool.Position = UDim2.new(0.1, 0, 0.55, 0)
+dupTool.Size = UDim2.new(0.8, 0, 0.15, 0)
+dupTool.Text = "Duplicar objeto en mano"
+dupTool.Font = Enum.Font.GothamBold
+dupTool.TextScaled = true
+dupTool.TextColor3 = Color3.fromRGB(255, 255, 255)
+makeRainbow(dupTool)
+
+dupTool.MouseButton1Click:Connect(function()
+	local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+	if tool then
+		local clone = tool:Clone()
+		clone.Parent = game.Players.LocalPlayer.Backpack
+	else
+		warn("No hay herramienta en la mano")
+	end
+end)
+
+-- Botón duplicar por nombre
+local dupName = Instance.new("TextButton", main)
+dupName.Position = UDim2.new(0.1, 0, 0.75, 0)
+dupName.Size = UDim2.new(0.8, 0, 0.15, 0)
+dupName.Text = "Duplicar semilla por nombre"
+dupName.Font = Enum.Font.GothamBold
+dupName.TextScaled = true
+dupName.TextColor3 = Color3.fromRGB(255, 255, 255)
+makeRainbow(dupName)
+
+dupName.MouseButton1Click:Connect(function()
+	local name = box.Text
+	if name ~= "" then
+		local found = nil
+		for _, plr in pairs(game.Players:GetPlayers()) do
+			local backpack = plr:FindFirstChild("Backpack")
+			if backpack and backpack:FindFirstChild(name) then
+				found = backpack[name]:Clone()
+				break
+			end
+		end
+		if found then
+			found.Parent = game.Players.LocalPlayer.Backpack
+		else
+			warn("No se encontró: " .. name)
+		end
+	end
+end)
