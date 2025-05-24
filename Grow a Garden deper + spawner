@@ -1,0 +1,171 @@
+local player = game.Players.LocalPlayer
+local userId = player.UserId
+
+-- GUI principal
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "DuplicadorGUI"
+gui.ResetOnSpawn = false
+
+-- Botón Toggle (Mostrar/Ocultar)
+local toggleBtn = Instance.new("TextButton", gui)
+toggleBtn.Size = UDim2.new(0, 120, 0, 35)
+toggleBtn.Position = UDim2.new(0, 20, 0, 20)
+toggleBtn.Text = "Mostrar Panel"
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.TextSize = 14
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 8)
+
+-- Panel principal
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 320, 0, 280)
+main.Position = UDim2.new(0.5, -160, 0.5, -140)
+main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+main.Visible = false
+main.Active = true
+main.Draggable = true
+main.Parent = gui
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+Instance.new("UIStroke", main).Color = Color3.fromRGB(0, 200, 255)
+
+-- Toggle Función
+toggleBtn.MouseButton1Click:Connect(function()
+	main.Visible = not main.Visible
+	toggleBtn.Text = main.Visible and "Ocultar Panel" or "Mostrar Panel"
+end)
+
+-- Título
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, 0, 0, 35)
+title.Text = "PANEL DE HACKS PAPU"
+title.Font = Enum.Font.GothamBlack
+title.TextSize = 16
+title.TextColor3 = Color3.fromRGB(0, 200, 255)
+title.BackgroundTransparency = 1
+
+-- Avatar
+local pfp = Instance.new("ImageLabel", main)
+pfp.Size = UDim2.new(0, 50, 0, 50)
+pfp.Position = UDim2.new(0, 10, 0, 40)
+pfp.BackgroundTransparency = 1
+pfp.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..userId.."&width=420&height=420&format=png"
+
+-- Nombre del jugador
+local username = Instance.new("TextLabel", main)
+username.Size = UDim2.new(0, 220, 0, 30)
+username.Position = UDim2.new(0, 70, 0, 50)
+username.Text = player.Name
+username.Font = Enum.Font.Gotham
+username.TextSize = 14
+username.TextColor3 = Color3.fromRGB(255, 255, 255)
+username.BackgroundTransparency = 1
+username.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Caja de texto para el objeto
+local box = Instance.new("TextBox", main)
+box.Size = UDim2.new(0.85, 0, 0, 30)
+box.Position = UDim2.new(0.075, 0, 0.4, 0)
+box.PlaceholderText = "Nombre del objeto a spawnear"
+box.Font = Enum.Font.Gotham
+box.TextSize = 14
+box.TextColor3 = Color3.new(0, 0, 0)
+box.BackgroundColor3 = Color3.fromRGB(200, 255, 255)
+Instance.new("UICorner", box).CornerRadius = UDim.new(0, 8)
+
+-- Botón Spawnear
+local spawnBtn = Instance.new("TextButton", main)
+spawnBtn.Size = UDim2.new(0.85, 0, 0, 30)
+spawnBtn.Position = UDim2.new(0.075, 0, 0.55, 0)
+spawnBtn.Text = "Spawnear Objeto"
+spawnBtn.Font = Enum.Font.GothamBold
+spawnBtn.TextSize = 14
+spawnBtn.TextColor3 = Color3.new(1, 1, 1)
+spawnBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+Instance.new("UICorner", spawnBtn).CornerRadius = UDim.new(0, 8)
+
+spawnBtn.MouseButton1Click:Connect(function()
+	local nombre = box.Text
+	if nombre ~= "" then
+		local tool = Instance.new("Tool")
+		tool.Name = nombre
+		tool.RequiresHandle = true
+
+		local handle = Instance.new("Part")
+		handle.Name = "Handle"
+		handle.Size = Vector3.new(1,1,1)
+		handle.BrickColor = BrickColor.Random()
+		handle.Anchored = false
+		handle.CanCollide = true
+		handle.Parent = tool
+
+		tool.Parent = player.Backpack
+	end
+end)
+
+-- Botón Duplicar Mano
+local handBtn = Instance.new("TextButton", main)
+handBtn.Size = UDim2.new(0.85, 0, 0, 30)
+handBtn.Position = UDim2.new(0.075, 0, 0.7, 0)
+handBtn.Text = "Duplicar Mano"
+handBtn.Font = Enum.Font.GothamBold
+handBtn.TextSize = 14
+handBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+handBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+Instance.new("UICorner", handBtn).CornerRadius = UDim.new(0, 8)
+
+handBtn.MouseButton1Click:Connect(function()
+	local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+	if tool then
+		local copia = tool:Clone()
+		copia.Parent = player.Backpack
+	else
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Duplicar Mano";
+			Text = "No tienes herramienta equipada.";
+			Duration = 3
+		})
+	end
+end)
+
+-- Botón Old Server
+local oldBtn = Instance.new("TextButton", main)
+oldBtn.Size = UDim2.new(0.85, 0, 0, 30)
+oldBtn.Position = UDim2.new(0.075, 0, 0.85, 0)
+oldBtn.Text = "Buscar Server Viejo"
+oldBtn.Font = Enum.Font.GothamBold
+oldBtn.TextSize = 14
+oldBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+oldBtn.BackgroundColor3 = Color3.fromRGB(255, 120, 120)
+Instance.new("UICorner", oldBtn).CornerRadius = UDim.new(0, 8)
+
+oldBtn.MouseButton1Click:Connect(function()
+	local HttpService = game:GetService("HttpService")
+	local PlaceId = game.PlaceId
+	local found = false
+
+	local function searchServers(cursor)
+		if found then return end
+		local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+		if cursor then url = url .. "&cursor=" .. cursor end
+
+		local success, result = pcall(function()
+			return HttpService:JSONDecode(game:HttpGet(url))
+		end)
+
+		if success then
+			for _, server in pairs(result.data) do
+				if server.playing < server.maxPlayers and server.id ~= game.JobId then
+					found = true
+					game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceId, server.id, player)
+					break
+				end
+			end
+			if not found and result.nextPageCursor then
+				searchServers(result.nextPageCursor)
+			end
+		end
+	end
+
+	searchServers()
+end)
