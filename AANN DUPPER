@@ -1,0 +1,152 @@
+local player = game.Players.LocalPlayer
+local userId = player.UserId
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "DuplicadorGUI"
+gui.ResetOnSpawn = false
+
+-- Frame principal
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 340, 0, 240)
+main.Position = UDim2.new(0.5, -170, 0.5, -120)
+main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+main.Active = true
+main.Draggable = true
+main.Parent = gui
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
+local stroke = Instance.new("UIStroke", main)
+stroke.Color = Color3.fromRGB(0, 200, 255)
+stroke.Thickness = 2
+
+-- Título
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "🍄AANN DUPPER V1.0🌿"
+title.Font = Enum.Font.GothamSemibold
+title.TextSize = 16
+title.TextColor3 = Color3.fromRGB(0, 200, 255)
+title.BackgroundTransparency = 1
+
+-- Imagen de perfil
+local pfp = Instance.new("ImageLabel", main)
+pfp.Size = UDim2.new(0, 50, 0, 50)
+pfp.Position = UDim2.new(0, 10, 0, 35)
+pfp.BackgroundTransparency = 1
+pfp.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..userId.."&width=420&height=420&format=png"
+
+-- Nombre de usuario
+local username = Instance.new("TextLabel", main)
+username.Size = UDim2.new(0, 220, 0, 30)
+username.Position = UDim2.new(0, 70, 0, 45)
+username.Text = player.Name
+username.Font = Enum.Font.Gotham
+username.TextSize = 14
+username.TextColor3 = Color3.fromRGB(255, 255, 255)
+username.BackgroundTransparency = 1
+username.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Caja de texto
+local box = Instance.new("TextBox", main)
+box.Size = UDim2.new(0.85, 0, 0, 30)
+box.Position = UDim2.new(0.075, 0, 0.45, 0)
+box.PlaceholderText = "Nombre del objeto a duplicar"
+box.Font = Enum.Font.Gotham
+box.TextSize = 14
+box.TextColor3 = Color3.new(0, 0, 0)
+box.BackgroundColor3 = Color3.fromRGB(200, 255, 255)
+Instance.new("UICorner", box).CornerRadius = UDim.new(0, 8)
+
+-- Botón Duplicar
+local btn = Instance.new("TextButton", main)
+btn.Size = UDim2.new(0.4, 0, 0, 30)
+btn.Position = UDim2.new(0.075, 0, 0.8, 0)
+btn.Text = "Duplicar"
+btn.Font = Enum.Font.GothamBold
+btn.TextSize = 14
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+
+btn.MouseButton1Click:Connect(function()
+	local nombre = box.Text
+	if nombre ~= "" then
+		local duplicado = Instance.new("Tool")
+		duplicado.Name = nombre
+		duplicado.RequiresHandle = false
+
+		local handle = Instance.new("Part")
+		handle.Name = "Handle"
+		handle.Size = Vector3.new(1,1,1)
+		handle.Transparency = 0
+		handle.Anchored = false
+		handle.CanCollide = true
+		handle.BrickColor = BrickColor.Random()
+		handle.Parent = duplicado
+
+		duplicado.Parent = player.Backpack
+	end
+end)
+
+-- Botón Spawn en mano
+local spawnBtn = Instance.new("TextButton", main)
+spawnBtn.Size = UDim2.new(0.4, 0, 0, 30)
+spawnBtn.Position = UDim2.new(0.525, 0, 0.8, 0)
+spawnBtn.Text = "Spawn Mano"
+spawnBtn.Font = Enum.Font.GothamBold
+spawnBtn.TextSize = 14
+spawnBtn.TextColor3 = Color3.new(1, 1, 1)
+spawnBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+Instance.new("UICorner", spawnBtn).CornerRadius = UDim.new(0, 8)
+
+spawnBtn.MouseButton1Click:Connect(function()
+	local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+	if tool then
+		local clon = tool:Clone()
+		clon.Parent = player.Backpack
+	end
+end)
+
+-- Botón Old Server
+local oldBtn = Instance.new("TextButton", main)
+oldBtn.Size = UDim2.new(0.85, 0, 0, 25)
+oldBtn.Position = UDim2.new(0.075, 0, 0.92, 0)
+oldBtn.Text = "Old Server"
+oldBtn.Font = Enum.Font.Gotham
+oldBtn.TextSize = 13
+oldBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+oldBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+Instance.new("UICorner", oldBtn).CornerRadius = UDim.new(0, 8)
+
+-- Acción Old Server REAL
+oldBtn.MouseButton1Click:Connect(function()
+	local HttpService = game:GetService("HttpService")
+	local TeleportService = game:GetService("TeleportService")
+	local placeId = game.PlaceId
+	local servers = {}
+
+	local function getOldServer()
+		local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
+		local success, response = pcall(function()
+			return HttpService:JSONDecode(game:HttpGet(url))
+		end)
+
+		if success and response and response.data then
+			for _, server in pairs(response.data) do
+				if server.playing < server.maxPlayers and server.id ~= game.JobId then
+					table.insert(servers, server.id)
+				end
+			end
+		end
+	end
+
+	getOldServer()
+	if #servers > 0 then
+		TeleportService:TeleportToPlaceInstance(placeId, servers[1], player)
+	else
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Old Server";
+			Text = "No se encontró uno disponible.";
+			Duration = 3
+		})
+	end
+end)
